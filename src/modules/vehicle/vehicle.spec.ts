@@ -1,18 +1,38 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { VehicleController } from './vehicle.controller';
+import { VehicleDTO } from './vehicle.dto';
+import { VehicleService } from './vehicle.service';
 
-describe('Vehicles Controller', () => {
-  let controller: VehicleController;
+describe('Veículos CRUD', () => {
+  let vehicleController: VehicleController;
+  let newVehicle: VehicleDTO;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [VehicleController]
+      controllers: [VehicleController],
+      providers: [VehicleService]
     }).compile();
 
-    controller = module.get<VehicleController>(VehicleController);
+    vehicleController = module.get<VehicleController>(VehicleController);
+    newVehicle = new VehicleDTO({
+      id: '1k13kjl10',
+      vehicle: 'Polo',
+      brand: 'Volkswagen',
+      year: 2019,
+      description: '1.6 MSI',
+      created: new Date(),
+      updated: new Date()
+    });
   });
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
+
+  describe('Criação', () => {
+    it('Veículo gerado com SUCESSO.', () => {
+      expect(vehicleController.createVehicle(newVehicle)).toStrictEqual(newVehicle);
+    });
+
+    it('EXCEÇÃO: veículo existente.', () => {
+      expect(() => vehicleController.createVehicle(newVehicle)).toThrowError();
+    });
   });
 });

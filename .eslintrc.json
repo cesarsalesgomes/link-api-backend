@@ -1,9 +1,14 @@
 {
   "env": {
     "browser": true,
-    "es6": true
+    "es6": true,
+    "jest": true
   },
-  "extends": ["airbnb-base"],
+  "extends": [
+    "airbnb-base",
+    "plugin:@typescript-eslint/recommended",
+    "prettier/@typescript-eslint"
+  ],
   "globals": {
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly"
@@ -27,7 +32,10 @@
         "js": "never",
         "ts": "never"
       }
-    ]
+    ],
+    "class-methods-use-this": "off",
+    "no-useless-constructor": "off",
+    "@typescript-eslint/no-useless-constructor": "error"
   },
   "settings": {
     "import/resolver": {

@@ -1,4 +1,14 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Post, Body } from '@nestjs/common';
+import { Vehicle } from './vehicle.entity';
+import { VehicleDTO } from './vehicle.dto';
+import { VehicleService } from './vehicle.service';
 
 @Controller('vehicles')
-export class VehicleController { }
+export class VehicleController {
+  constructor(private readonly vehicleService: VehicleService) { }
+
+  @Post('/')
+  public async createVehicle(@Body() vehicle: VehicleDTO): Promise<Vehicle> {
+    return this.vehicleService.create(vehicle);
+  }
+}

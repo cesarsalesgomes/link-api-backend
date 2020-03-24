@@ -6,7 +6,7 @@ import {
   name: 'TB_VHC'
 })
 @Check('"year" >= 0')
-export class Stock {
+export class Vehicle {
   @PrimaryGeneratedColumn()
   id: string;
 
