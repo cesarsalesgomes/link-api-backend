@@ -32,4 +32,8 @@ export class VehicleService {
   public async deleteAll(): Promise<void> {
     await this.VehicleModel.deleteMany({});
   }
+
+  public async getAll(): Promise<Vehicle[]> {
+    return this.VehicleModel.find({});
+  }
 }

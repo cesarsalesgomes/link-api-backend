@@ -52,4 +52,25 @@ describe('Veículos CRUD', () => {
       await expect(vehicleController.createVehicle(vehicleDTO)).rejects.toThrow();
     });
   });
+
+  describe('Lista', () => {
+    it('Retorna todos os veículos da base.', async () => {
+      const vehiclePolo2020 = { ...vehicleDTO, year: 2020 };
+      const vehiclePolo2021 = { ...vehicleDTO, year: 2021 };
+
+      await vehicleController.createVehicle(vehicleDTO);
+      await vehicleController.createVehicle(vehiclePolo2020);
+      await vehicleController.createVehicle(vehiclePolo2021);
+
+      const vehicles = await vehicleController.getVehicles();
+
+      expect(vehicles).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining(vehicleDTO),
+          expect.objectContaining(vehiclePolo2020),
+          expect.objectContaining(vehiclePolo2021)
+        ])
+      );
+    });
+  });
 });
