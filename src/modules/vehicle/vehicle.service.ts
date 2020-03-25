@@ -40,4 +40,8 @@ export class VehicleService {
   public async findById(id: string): Promise<Vehicle> {
     return this.VehicleModel.findById(id);
   }
+
+  public async deleteVehicle(id: string): Promise<Vehicle> {
+    return this.VehicleModel.findByIdAndDelete(id);
+  }
 }

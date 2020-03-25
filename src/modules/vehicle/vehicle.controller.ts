@@ -1,5 +1,5 @@
 import {
-  Controller, Post, Body, Get, Param
+  Controller, Post, Body, Get, Param, Delete
 } from '@nestjs/common';
 import { Vehicle } from './vehicle.model';
 import { VehicleDTO } from './vehicle.dto';
@@ -22,5 +22,10 @@ export class VehicleController {
   @Get('/:id')
   public async getVehicle(@Param('id') idVehicle): Promise<Vehicle> {
     return this.vehicleService.findById(idVehicle);
+  }
+
+  @Delete('/:id')
+  public async deleteVehicle(@Param('id') idVehicle): Promise<Vehicle> {
+    return this.vehicleService.deleteVehicle(idVehicle);
   }
 }

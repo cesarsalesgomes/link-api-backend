@@ -53,7 +53,7 @@ describe('Veículos CRUD', () => {
     });
   });
 
-  describe('Lista', () => {
+  describe('Listagem', () => {
     it('Retorna todos os veículos da base.', async () => {
       const vehiclePolo2020 = { ...vehicleDTO, year: 2020 };
       const vehiclePolo2021 = { ...vehicleDTO, year: 2021 };
@@ -75,12 +75,24 @@ describe('Veículos CRUD', () => {
   });
 
   describe('Detalhe', () => {
-    it('Detalhe por id um veículo criado.', async () => {
+    it('Retorna um veículo por id.', async () => {
       const vehicle = await vehicleController.createVehicle(vehicleDTO);
 
       const vehicleSearched = await vehicleController.getVehicle(vehicle.id);
 
       expect(vehicleSearched).toBeDefined();
+    });
+  });
+
+  describe('Remoção', () => {
+    it('Deleta um veículo por id.', async () => {
+      let vehicle = await vehicleController.createVehicle(vehicleDTO);
+
+      await vehicleController.deleteVehicle(vehicle.id);
+
+      vehicle = await vehicleService.findOne();
+
+      expect(vehicle).toBeNull();
     });
   });
 });
