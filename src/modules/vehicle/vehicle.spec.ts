@@ -73,4 +73,14 @@ describe('Veículos CRUD', () => {
       );
     });
   });
+
+  describe('Detalhe', () => {
+    it('Detalhe por id um veículo criado.', async () => {
+      const vehicle = await vehicleController.createVehicle(vehicleDTO);
+
+      const vehicleSearched = await vehicleController.getVehicle(vehicle.id);
+
+      expect(vehicleSearched).toBeDefined();
+    });
+  });
 });

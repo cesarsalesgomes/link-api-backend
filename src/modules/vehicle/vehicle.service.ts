@@ -36,4 +36,8 @@ export class VehicleService {
   public async getAll(): Promise<Vehicle[]> {
     return this.VehicleModel.find({});
   }
+
+  public async findById(id: string): Promise<Vehicle> {
+    return this.VehicleModel.findById(id);
+  }
 }

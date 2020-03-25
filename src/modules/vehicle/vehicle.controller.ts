@@ -1,5 +1,5 @@
 import {
-  Controller, Post, Body, Get
+  Controller, Post, Body, Get, Param
 } from '@nestjs/common';
 import { Vehicle } from './vehicle.model';
 import { VehicleDTO } from './vehicle.dto';
@@ -17,5 +17,10 @@ export class VehicleController {
   @Get('/')
   public async getVehicles(): Promise<Vehicle[]> {
     return this.vehicleService.getAll();
+  }
+
+  @Get('/:id')
+  public async getVehicle(@Param('id') idVehicle): Promise<Vehicle> {
+    return this.vehicleService.findById(idVehicle);
   }
 }
