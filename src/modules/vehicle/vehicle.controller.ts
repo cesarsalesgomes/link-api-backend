@@ -1,5 +1,5 @@
 import { Controller, Post, Body } from '@nestjs/common';
-import { Vehicle } from './vehicle.entity';
+import { Vehicle } from './vehicle.model';
 import { VehicleDTO } from './vehicle.dto';
 import { VehicleService } from './vehicle.service';
 
