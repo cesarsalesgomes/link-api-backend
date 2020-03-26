@@ -50,4 +50,17 @@ export class VehicleService {
 
     await this.VehicleModel.findByIdAndUpdate(id, { ...vehicleDTO, updated });
   }
+
+  public async getPaginated(pageIndex: number, pageSize: number): Promise<{ vehicles: Vehicle[], total: number }> {
+    const limit = pageSize;
+    const skip = pageIndex * pageSize;
+
+    const total = await this.VehicleModel.countDocuments();
+    const vehicles = await this.VehicleModel.find({}, {}, { skip, limit });
+
+    return {
+      total,
+      vehicles
+    };
+  }
 }

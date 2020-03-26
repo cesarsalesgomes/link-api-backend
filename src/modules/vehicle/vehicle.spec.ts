@@ -72,6 +72,44 @@ describe('Veículos CRUD', () => {
         ])
       );
     });
+
+    it('Retorna os veículos da base com paginação.', async () => {
+      const vehiclePolo2020 = { ...vehicleDTO, year: 2020 };
+      const vehiclePolo2021 = { ...vehicleDTO, year: 2021 };
+      const vehiclePolo2022 = { ...vehicleDTO, year: 2022 };
+      const vehiclePolo2023 = { ...vehicleDTO, year: 2023 };
+      const vehiclePolo2024 = { ...vehicleDTO, year: 2024 };
+
+      await vehicleController.createVehicle(vehicleDTO);
+      await vehicleController.createVehicle(vehiclePolo2020);
+      await vehicleController.createVehicle(vehiclePolo2021);
+      await vehicleController.createVehicle(vehiclePolo2022);
+      await vehicleController.createVehicle(vehiclePolo2023);
+      await vehicleController.createVehicle(vehiclePolo2024);
+
+      // Página: 0 - Tamanho da página: 3
+      let { vehicles, total } = await vehicleController.getVehiclesPaginated(0, 3);
+
+      expect(vehicles).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining(vehicleDTO),
+          expect.objectContaining(vehiclePolo2020),
+          expect.objectContaining(vehiclePolo2021)
+        ])
+      );
+      expect(total).toEqual(6);
+
+      // Página: 1 - Tamanho da página: 3
+      vehicles = (await vehicleController.getVehiclesPaginated(1, 3))?.vehicles;
+
+      expect(vehicles).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining(vehiclePolo2022),
+          expect.objectContaining(vehiclePolo2023),
+          expect.objectContaining(vehiclePolo2024)
+        ])
+      );
+    });
   });
 
   describe('Detalhe', () => {
