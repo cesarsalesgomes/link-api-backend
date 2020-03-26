@@ -8,7 +8,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     useFactory: async (configService: ConfigService) => ({
       uri: configService.get('MONGODB_URL'),
       useNewUrlParser: true,
-      useUnifiedTopology: true
+      useUnifiedTopology: true,
+      useCreateIndex: true
     }),
     inject: [ConfigService]
   })]

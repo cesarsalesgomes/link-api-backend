@@ -10,7 +10,9 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
       return {
         uri,
         useNewUrlParser: true,
-        useUnifiedTopology: true
+        useUnifiedTopology: true,
+        useCreateIndex: true,
+        useFindAndModify: false
       };
     }
   })]

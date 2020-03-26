@@ -17,12 +17,13 @@ export class UserService {
   }
 
   async createUser(userDTO: UserDTO): Promise<void> {
-    const { username } = userDTO;
+    const { username, name } = userDTO;
     const password = hashSync(userDTO.password, genSaltSync());
 
     await new this.UserModel({
       username,
-      password
+      password,
+      name
     }).save();
   }
 

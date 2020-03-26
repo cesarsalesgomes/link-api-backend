@@ -9,10 +9,15 @@ export const UserSchema = new Schema({
   password: {
     type: String,
     required: true
+  },
+  name: {
+    type: String,
+    required: true
   }
 });
 
 export interface User extends Document {
   username: string;
   password: string;
+  name: string;
 }
