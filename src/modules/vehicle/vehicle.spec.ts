@@ -95,4 +95,22 @@ describe('Veículos CRUD', () => {
       expect(vehicle).toBeNull();
     });
   });
+
+  describe('Atualização', () => {
+    it('Atualiza os dados de um veículo | Checa se campo de data de atualização foi alterado.', async () => {
+      const vehicle = await vehicleController.createVehicle(vehicleDTO);
+
+      const oldDate = vehicle.updated;
+
+      // Aguarda 1 segundo para que data atualizada seja diferente da data criada
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      await vehicleController.updateVehicle(vehicle.id, new VehicleDTO({ year: 2020 }));
+
+      const updatedVehicle = await vehicleService.findById(vehicle.id);
+
+      expect(updatedVehicle.year).toEqual(2020);
+      expect(updatedVehicle.updated).not.toEqual(oldDate);
+    });
+  });
 });

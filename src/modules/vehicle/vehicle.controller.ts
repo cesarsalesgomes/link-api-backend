@@ -1,5 +1,5 @@
 import {
-  Controller, Post, Body, Get, Param, Delete
+  Controller, Post, Body, Get, Param, Delete, Put
 } from '@nestjs/common';
 import { Vehicle } from './vehicle.model';
 import { VehicleDTO } from './vehicle.dto';
@@ -27,5 +27,10 @@ export class VehicleController {
   @Delete('/:id')
   public async deleteVehicle(@Param('id') idVehicle): Promise<Vehicle> {
     return this.vehicleService.deleteVehicle(idVehicle);
+  }
+
+  @Put('/:id')
+  public async updateVehicle(@Param('id') idVehicle, @Body() vehicle: VehicleDTO): Promise<void> {
+    await this.vehicleService.updateVehicle(idVehicle, vehicle);
   }
 }

@@ -1,21 +1,21 @@
-import { IsNumber, IsNotEmpty, IsString } from 'class-validator';
+import { IsNumber, IsString, IsOptional } from 'class-validator';
 
 export class VehicleDTO {
-  @IsNotEmpty()
   @IsString()
-  vehicle: string;
+  @IsOptional()
+  vehicle?: string;
 
-  @IsNotEmpty()
   @IsString()
-  brand: string;
+  @IsOptional()
+  brand?: string;
 
-  @IsNotEmpty()
   @IsNumber()
-  year: number;
+  @IsOptional()
+  year?: number;
 
-  @IsNotEmpty()
   @IsString()
-  description: string;
+  @IsOptional()
+  description?: string;
 
   constructor(partial: Partial<VehicleDTO>) {
     Object.assign(this, partial);

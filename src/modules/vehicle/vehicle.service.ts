@@ -44,4 +44,10 @@ export class VehicleService {
   public async deleteVehicle(id: string): Promise<Vehicle> {
     return this.VehicleModel.findByIdAndDelete(id);
   }
+
+  public async updateVehicle(id: string, vehicleDTO: VehicleDTO): Promise<void> {
+    const updated = this.utils.getCurrentDate();
+
+    await this.VehicleModel.findByIdAndUpdate(id, { ...vehicleDTO, updated });
+  }
 }
