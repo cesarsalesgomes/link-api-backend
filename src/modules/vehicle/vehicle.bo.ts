@@ -13,7 +13,7 @@ export class VehicleBO {
   ) { }
 
   /**
-   * Lança exceção caso veículo já existir na base de dados.
+   * Lança exceção caso veículo existente na base de dados.
    *
    * @param vehicleDTO VehicleDTO
    */
