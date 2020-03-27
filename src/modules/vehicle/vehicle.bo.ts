@@ -36,6 +36,10 @@ export class VehicleBO {
   public async getFipeBrand(brand: string): Promise<FipeBrand> {
     const brands = await this.remoteService.getBrands();
 
+    if (!brand) {
+      throw new InternalServerErrorException({ message: VehicleExceptions.BRAND_NOT_FOUND });
+    }
+
     const fipeBrand = brands.find((b) => b.nome.toLowerCase() === brand.toLowerCase());
 
     if (!fipeBrand) {

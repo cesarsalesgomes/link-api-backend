@@ -177,6 +177,12 @@ describe('Veículos CRUD', () => {
       expect(fipeBrand).toStrictEqual(fipeBrand);
     });
 
+    it('Marca não informada.', async () => {
+      const fipeBrand = await vehicleBO.getFipeBrand('Audi');
+
+      expect(fipeBrand).toStrictEqual(fipeBrand);
+    });
+
     it('Código FIPE da marca não encontrado.', async () => {
       await expect(vehicleBO.getFipeBrand('Marca inexistente')).rejects.toThrow();
     });
