@@ -5,6 +5,7 @@ import { VehicleModule } from './modules/vehicle/vehicle.module';
 import { DatabaseModule } from './modules/database/database.module';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { RemoteModule } from './modules/remote/remote.module';
 
 @Module({
   imports: [
@@ -12,7 +13,8 @@ import { AuthModule } from './modules/auth/auth.module';
     DatabaseModule,
     VehicleModule,
     UserModule,
-    AuthModule
+    AuthModule,
+    RemoteModule
   ],
   controllers: []
 })
