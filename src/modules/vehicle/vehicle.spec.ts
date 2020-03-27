@@ -5,11 +5,16 @@ import { VehicleDTO } from './vehicle.dto';
 import { VehicleModule } from './vehicle.module';
 import { DatabaseTestModule } from '../database/database-test.module';
 import { VehicleService } from './vehicle.service';
+import { VehicleBO } from './vehicle.bo';
+import { RemoteModule } from '../remote/remote.module';
+import { RemoteService, FipeDetails } from '../remote/remote.service';
 
 describe('Veículos CRUD', () => {
   let vehicleDTO: VehicleDTO;
   let vehicleService: VehicleService;
   let vehicleController: VehicleController;
+  let vehicleBO: VehicleBO;
+  let remoteService: RemoteService;
 
   beforeAll(async () => {
     /**
@@ -19,7 +24,8 @@ describe('Veículos CRUD', () => {
       imports: [
         ConfigModule.forRoot({ isGlobal: true }),
         DatabaseTestModule,
-        VehicleModule
+        VehicleModule,
+        RemoteModule
       ]
     }).compile();
 
@@ -32,6 +38,8 @@ describe('Veículos CRUD', () => {
 
     vehicleService = moduleRef.get<VehicleService>(VehicleService);
     vehicleController = moduleRef.get<VehicleController>(VehicleController);
+    vehicleBO = moduleRef.get<VehicleBO>(VehicleBO);
+    remoteService = moduleRef.get<RemoteService>(RemoteService);
   });
 
   beforeEach(async () => {
@@ -159,6 +167,61 @@ describe('Veículos CRUD', () => {
 
       expect(updatedVehicle.year).toEqual(2020);
       expect(updatedVehicle.updated).not.toEqual(oldDate);
+    });
+  });
+
+  describe('Busca do código FIPE de uma marca', () => {
+    it('Código FIPE da marca retornado com sucesso.', async () => {
+      const fipeBrand = await vehicleBO.getFipeBrand('Audi');
+
+      expect(fipeBrand).toStrictEqual(fipeBrand);
+    });
+
+    it('Código FIPE da marca não encontrado.', async () => {
+      await expect(vehicleBO.getFipeBrand('Marca inexistente')).rejects.toThrow();
+    });
+  });
+
+  describe('Bulk Create', () => {
+    const fipeDetailVehicle: FipeDetails = {
+      Valor: 'R$ 12.336,00',
+      Marca: 'Audi',
+      Modelo: '100 2.8 V6',
+      AnoModelo: 1995,
+      Combustivel: 'Gasolina',
+      CodigoFipe: '008030-6',
+      MesReferencia: 'março de 2020 ',
+      TipoVeiculo: 1,
+      SiglaCombustivel: 'G'
+    };
+
+    it('Verifica se um veículo foi adicionado com sucesso.', async () => {
+      jest.spyOn(remoteService, 'getBrands').mockImplementation(async () => [{
+        nome: 'Audi',
+        codigo: '6'
+      }]);
+      jest.spyOn(remoteService, 'getBrandModels').mockImplementation(async () => [{
+        nome: '100 2.8 V6',
+        codigo: 43
+      }]);
+      jest.spyOn(remoteService, 'getModelYears').mockImplementation(async () => [{
+        nome: '2001 Gasolina',
+        codigo: '2001-1'
+      }]);
+      jest.spyOn(remoteService, 'getModelDetails').mockImplementation(async () => fipeDetailVehicle);
+
+      const vehicles = await vehicleController.bulkCreateVehicles('Audi');
+
+      expect(vehicles).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            vehicle: fipeDetailVehicle.Modelo,
+            brand: fipeDetailVehicle.Marca,
+            year: fipeDetailVehicle.AnoModelo,
+            description: `Valor: ${fipeDetailVehicle.Valor} | Combustível: ${fipeDetailVehicle.Combustivel}`
+          })
+        ])
+      );
     });
   });
 });

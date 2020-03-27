@@ -14,6 +14,11 @@ export class VehicleController {
     return this.vehicleService.create(vehicle);
   }
 
+  @Post('/bulk')
+  public async bulkCreateVehicles(@Query('brand') brand?: string): Promise<Vehicle[]> {
+    return this.vehicleService.bulkCreateFipeBrandVehicles(brand);
+  }
+
   @Get('/paginated')
   public async getVehiclesPaginated(
     @Query('pageIndex', new ParseIntPipe()) pageIndex: number,

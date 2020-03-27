@@ -2,7 +2,7 @@ import { Test } from '@nestjs/testing';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseTestModule } from '../database/database-test.module';
 import {
-  RemoteService, FipeBrand, FipeModel, FipeYear
+  RemoteService, FipeBrand, FipeModel, FipeYear, FipeDetails
 } from './remote.service';
 import { RemoteModule } from './remote.module';
 
@@ -11,6 +11,7 @@ describe('Serviços remotos', () => {
   let FipeAudiBrand: FipeBrand;
   let FipeAudiModel: FipeModel;
   let FipeAudiYear: FipeYear;
+  let FipeAudiDetails: FipeDetails;
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -37,6 +38,18 @@ describe('Serviços remotos', () => {
     FipeAudiYear = {
       nome: '2001 Gasolina',
       codigo: '2001-1'
+    };
+    // Audi Fipe A4 Details
+    FipeAudiDetails = {
+      Valor: 'R$ 18.951,00',
+      Marca: 'Audi',
+      Modelo: 'A4 1.8  Aut.',
+      AnoModelo: 2001,
+      Combustivel: 'Gasolina',
+      CodigoFipe: '008047-0',
+      MesReferencia: 'março de 2020 ',
+      TipoVeiculo: 1,
+      SiglaCombustivel: 'G'
     };
   });
 
@@ -69,6 +82,12 @@ describe('Serviços remotos', () => {
           expect.objectContaining(FipeAudiYear)
         ])
       );
+    });
+
+    it('Checa detalhes de um modelo retornado com sucesso.', async () => {
+      const details = await remoteService.getModelDetails(FipeAudiBrand.codigo, String(FipeAudiModel.codigo), FipeAudiYear.codigo);
+
+      expect(details).toStrictEqual(FipeAudiDetails);
     });
   });
 });
