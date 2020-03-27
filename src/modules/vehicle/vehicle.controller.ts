@@ -38,7 +38,7 @@ export class VehicleController {
   }
 
   @Put('/:id')
-  public async updateVehicle(@Param('id') idVehicle, @Body() vehicle: VehicleDTO): Promise<void> {
-    await this.vehicleService.updateVehicle(idVehicle, vehicle);
+  public async updateVehicle(@Param('id') idVehicle, @Body() vehicle: VehicleDTO): Promise<Vehicle> {
+    return this.vehicleService.updateVehicle(idVehicle, vehicle);
   }
 }

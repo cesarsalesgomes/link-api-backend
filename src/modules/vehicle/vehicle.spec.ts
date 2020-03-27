@@ -88,7 +88,7 @@ describe('Veículos CRUD', () => {
       await vehicleController.createVehicle(vehiclePolo2024);
 
       // Página: 0 - Tamanho da página: 3
-      let { vehicles, total } = await vehicleController.getVehiclesPaginated(0, 3);
+      const { vehicles, total } = await vehicleController.getVehiclesPaginated(0, 3);
 
       expect(vehicles).toEqual(
         expect.arrayContaining([
@@ -100,9 +100,7 @@ describe('Veículos CRUD', () => {
       expect(total).toEqual(6);
 
       // Página: 1 - Tamanho da página: 3
-      vehicles = (await vehicleController.getVehiclesPaginated(1, 3))?.vehicles;
-
-      expect(vehicles).toEqual(
+      expect((await vehicleController.getVehiclesPaginated(1, 3))?.vehicles).toEqual(
         expect.arrayContaining([
           expect.objectContaining(vehiclePolo2022),
           expect.objectContaining(vehiclePolo2023),

@@ -4,16 +4,20 @@ import { Model } from 'mongoose';
 import { Utils } from '../../utils';
 import { VehicleDTO } from './vehicle.dto';
 import { Vehicle } from './vehicle.model';
+import { VehicleBO } from './vehicle.bo';
 
 @Injectable()
 export class VehicleService {
   constructor(
     @InjectModel('Vehicle')
     private readonly VehicleModel: Model<Vehicle>,
+    private readonly vehicleBO: VehicleBO,
     private readonly utils: Utils
   ) { }
 
   public async create(vehicleDTO: VehicleDTO): Promise<Vehicle> {
+    await this.vehicleBO.checkExistingVehicle(vehicleDTO);
+
     const currentDate = this.utils.getCurrentDate();
 
     const newVehicle = new this.VehicleModel({
@@ -45,10 +49,12 @@ export class VehicleService {
     return this.VehicleModel.findByIdAndDelete(id);
   }
 
-  public async updateVehicle(id: string, vehicleDTO: VehicleDTO): Promise<void> {
+  public async updateVehicle(id: string, vehicleDTO: VehicleDTO): Promise<Vehicle> {
+    await this.vehicleBO.checkExistingVehicle(vehicleDTO);
+
     const updated = this.utils.getCurrentDate();
 
-    await this.VehicleModel.findByIdAndUpdate(id, { ...vehicleDTO, updated });
+    return this.VehicleModel.findByIdAndUpdate(id, { ...vehicleDTO, updated }, { new: true });
   }
 
   public async getPaginated(pageIndex: number, pageSize: number): Promise<{ vehicles: Vehicle[], total: number }> {
