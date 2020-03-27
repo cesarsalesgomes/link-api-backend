@@ -73,7 +73,7 @@ describe('Veículos CRUD', () => {
       );
     });
 
-    it('Retorna os veículos da base com paginação.', async () => {
+    it('Checa retorno dos veículos da base por paginação.', async () => {
       const vehiclePolo2020 = { ...vehicleDTO, year: 2020 };
       const vehiclePolo2021 = { ...vehicleDTO, year: 2021 };
       const vehiclePolo2022 = { ...vehicleDTO, year: 2022 };
@@ -105,6 +105,18 @@ describe('Veículos CRUD', () => {
           expect.objectContaining(vehiclePolo2022),
           expect.objectContaining(vehiclePolo2023),
           expect.objectContaining(vehiclePolo2024)
+        ])
+      );
+    });
+
+    it('Checa retorno dos veículos da base por paginação + filtro.', async () => {
+      await vehicleController.createVehicle(vehicleDTO);
+
+      const { vehicles } = await vehicleController.getVehiclesPaginated(0, 1, 'Polo');
+
+      expect(vehicles).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining(vehicleDTO)
         ])
       );
     });

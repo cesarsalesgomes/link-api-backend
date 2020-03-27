@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-restricted-syntax */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -57,12 +59,17 @@ export class VehicleService {
     return this.VehicleModel.findByIdAndUpdate(id, { ...vehicleDTO, updated }, { new: true });
   }
 
-  public async getPaginated(pageIndex: number, pageSize: number): Promise<{ vehicles: Vehicle[], total: number }> {
+  public async getPaginated(pageIndex: number, pageSize: number, vehicleDTO: VehicleDTO): Promise<{ vehicles: Vehicle[], total: number }> {
     const limit = pageSize;
     const skip = pageIndex * pageSize;
 
+    // Remove propriedades indefinidas (Mongoose considera como um valor)
+    for (const [key, value] of Object.entries(vehicleDTO)) {
+      if (!value) delete vehicleDTO[key];
+    }
+
     const total = await this.VehicleModel.countDocuments();
-    const vehicles = await this.VehicleModel.find({}, {}, { skip, limit });
+    const vehicles = await this.VehicleModel.find(vehicleDTO, {}, { skip, limit });
 
     return {
       total,

@@ -16,10 +16,16 @@ export class VehicleController {
 
   @Get('/paginated')
   public async getVehiclesPaginated(
-    @Query('pageIndex', new ParseIntPipe()) pageIndex?: number,
-    @Query('pageSize', new ParseIntPipe()) pageSize?: number
+    @Query('pageIndex', new ParseIntPipe()) pageIndex: number,
+    @Query('pageSize', new ParseIntPipe()) pageSize: number,
+    @Query('vehicle') vehicle?: string,
+    @Query('brand') brand?: string,
+    @Query('year') year?: number,
+    @Query('description') description?: string
   ): Promise<{ vehicles: Vehicle[], total: number }> {
-    return this.vehicleService.getPaginated(pageIndex, pageSize);
+    return this.vehicleService.getPaginated(pageIndex, pageSize, {
+      vehicle, brand, year, description
+    });
   }
 
   @Get('/')
